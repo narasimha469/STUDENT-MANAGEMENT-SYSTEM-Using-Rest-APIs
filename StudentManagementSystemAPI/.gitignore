@@ -1,0 +1,38 @@
+# Ignore Eclipse and STS metadata
+.metadata/
+.classpath
+.project
+.settings/
+
+# Maven target directory
+/target/
+
+# Gradle build directory
+/build/
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+
+# IDE files
+*.iml
+.idea/
+
+# Git
+*.swp
+*.swo
+
+# Exclude node_modules if full-stack
+node_modules/
+
+# Avoid lock file issues
+*.lock
+
+# VSCode (optional)
+.vscode/
