@@ -1,6 +1,7 @@
 package com.studentManagementSystem.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,31 +30,36 @@ public class StudentServiceImple implements StudentService {
 
 	@Override
 	public StudentInfo getStudentDetailsById(Long student_Id) {
-		StudentInfo student = studentRepository.findById(student_Id).orElse(null);
-
-		if (student == null) {
-			throw new StudentNotFoundException("Student not found with ID: " + student_Id);
+		Optional<StudentInfo> students = studentRepository.findById(student_Id);
+		if(students.isPresent()) {
+			return students.get();
+		}else {
+	        throw new StudentNotFoundException("Student not found with this Id");
 		}
-
-		return student;
 	}
 
 	@Override
 	public StudentInfo updateStudents(Long studentId, StudentInfo studentInfo) {
-		if (!studentRepository.existsById(studentId)) {
-			throw new StudentNotFoundException("Student not found with ID: " + studentId);
+		Optional<StudentInfo> students = studentRepository.findById(studentId);
+		if(students.isPresent()) {
+			studentInfo.setStudentId(studentId);
+			return studentRepository.save(studentInfo);
 		}
-		studentInfo.setStudentId(studentId);
-		return studentRepository.save(studentInfo);
+		else {
+		 throw new StudentNotFoundException("Student not found with this Id");
+		}
 	}
 
 	@Override
-	public void deleteStudentsById(Long student_Id) {
-		if (!studentRepository.existsById(student_Id)) {
-			throw new StudentNotFoundException("Student not found with ID: " + student_Id);
-		}
-		studentRepository.findById(student_Id);
-
+	public void deleteStudentsById(Long studentId) {
+	    Optional<StudentInfo> students = studentRepository.findById(studentId);
+	    if (students.isPresent()) {
+	        studentRepository.deleteById(studentId);
+	    } else {
+	        throw new StudentNotFoundException("Student not found with this Id");
+	    }
 	}
+
+		
 
 }
